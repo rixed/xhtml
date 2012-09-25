@@ -76,8 +76,11 @@ reinstall: uninstall install
 
 doc: doc/index.html
 
+DOCROOT ?= doc
+
 doc/index.html: xML.mli xHTML.mli
-	$(OCAMLDOC) -html -d doc $^
+	mkdir -p $(DOCROOT)
+	$(OCAMLDOC) -html -d $(DOCROOT) $^
 
 xHTML.mli: xHTML.ml
 	@$(SED) -n '/BEGIN INTERFACE/,/END INTERFACE/p' $< \
