@@ -1,8 +1,8 @@
 # $Id: Makefile,v 1.11 2004/01/27 10:57:18 ohl Exp $
 ########################################################################
 
-OCAMLC = ocamlc
-OCAMLOPT = ocamlopt
+OCAMLC = ocamlfind ocamlc
+OCAMLOPT = ocamlfind ocamlopt
 LIBS = -I .. 
 
 SRC_MLI = 

@@ -23,8 +23,9 @@ RM = rm
 MV = mv
 DIFF = diff
 
-OCAMLC = ocamlc.opt
-OCAMLOPT = ocamlopt.opt
+OCAMLC = ocamlfind ocamlc
+OCAMLOPT = ocamlfind ocamlopt
+OCAMLDOC = ocamlfind ocamldoc
 
 DOLLAR = $$
 
@@ -33,7 +34,7 @@ SUBDIRS = examples experimental private
 SRC_ML = xML.ml xHTML.ml
 SRC_MLI = $(SRC_ML:.ml=.mli)
 
-DISTFILES = README ChangeLog COPYING Makefile $(SRC_MLI) $(SRC_ML) \
+DISTFILES = META README ChangeLog COPYING Makefile $(SRC_MLI) $(SRC_ML) \
 	examples/Makefile examples/www_ls.ml examples/homepage.ml \
 	experimental/zipper.mli experimental/zipper.ml \
 	experimental/document.mli experimental/document.ml
@@ -62,14 +63,21 @@ xhtml.cma: xML.cmo xHTML.cmo
 
 clean:
 	rm -f *.o *.cm[iox] *.cma *.cmxa *.a *~
-	@for d in $(SUBDIRS); do test -d $$d && $(MAKE) -C $$d clean; done
+	$(MAKE) -C examples clean
+
+install: xhtml.cma xhtml.cmxa xHTML.cmi xML.cmi META
+	ocamlfind install XHTML $^
+uninstall:
+	ocamlfind remove XHTML
+reinstall: uninstall install
+
 
 ########################################################################
 
 doc: doc/index.html
 
 doc/index.html: xML.mli xHTML.mli
-	ocamldoc -html -d doc $^
+	$(OCAMLDOC) -html -d doc $^
 
 xHTML.mli: xHTML.ml
 	@$(SED) -n '/BEGIN INTERFACE/,/END INTERFACE/p' $< \

@@ -1,0 +1,5 @@
+description = "Creation of valid XHTML 1.1 (and XHTML 1.0)"
+version = "1"
+requires = ""
+archive(byte) = "xhtml.cma"
+archive(native) = "xhtml.cmxa"
